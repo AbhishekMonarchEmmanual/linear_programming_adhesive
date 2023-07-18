@@ -60,9 +60,10 @@ st.write("GIVE CONSTRAINT VALUE FOR STONE TILE ADHESIVE 20 kg")
 stone_tile_adhesive= st.text_input("", key= "stone_tile")
 if st.checkbox("MONTHLY BAG PRUDUCTION YOU DONT WANT TO EXCEED"):
     total_no_bags = int(aac_30) + int(aac_40) + int(floor_tile_adhesive) + int(wall_tile_adhesive) + int(stone_tile_adhesive)
+    st.write(total_no_bags)
 if st.checkbox("TOTAL PRODUCTION COST YOU HAVE IF YOU PRODUCE ALL BAG"):
     total_production_cost = int(aac_30)*aacblock30cost + int(aac_40)*aacblock40cost + int(floor_tile_adhesive)*floortile20cost + int(wall_tile_adhesive) * walltile20cost + int(stone_tile_adhesive) * stonetile20cost
-
+    st.write(total_production_cost)
 if st.checkbox("CLICK TO CREATE THE CONSTRAINT"):
     total_no_bags = int(aac_30) + int(aac_40) + int(floor_tile_adhesive) + int(wall_tile_adhesive) + int(stone_tile_adhesive)
     total_production_cost = int(aac_30)*aacblock30cost + int(aac_40)*aacblock40cost + int(floor_tile_adhesive)*floortile20cost + int(wall_tile_adhesive) * walltile20cost + int(stone_tile_adhesive) * stonetile20cost
