@@ -44,10 +44,10 @@ st.write({
     'wall tile adhesive  cost 20 kg' : '113 rs',
     'stone tile adhesive cost 20 kg' : '200 rs'
     })
-st.write("GIVE CONSTRAINT VALUES")
-st.text("YOU NEED TO GIVE PRODUCTION NUMBER OF BAGS IN MONTH THAT SHOULD NOT EXCEED FOR EACH BAG")
-st.text("FOR EXAMPLE GIVE VALUE FOR AAC BLOCK ADHESIVE = 200")
-st.text("means that prodcution of bag for particular prodcut should not exceed 200")
+st.write("GIVE CONSTRAINT VALUES FOR BAG PRODUCTION FOR EACH PRODCUT")
+st.text("PRODUCTION NUMBER OF BAGS IN MONTH THAT SHOULD NOT EXCEED FOR EACH BAG")
+st.text("FOR EXAMPLE IF YOU GIVE VALUE FOR AAC BLOCK ADHESIVE 30 KG = 200")
+st.text("IT MEANS THAT PRODUCTION SHOULD NOT EXCEED BAGS FOR AAC BLOCK ADHESIVE 30 KG 200")
 st.write("GIVE CONSTRAINT VALUE FOR AAC BLOCK ADHESIVE 30 kg")
 aac_30= st.text_input("",  key ="aac_30")
 st.write("GIVE CONSTRAINT VALUE FOR AAC BLOCK ADHESIVE 40 kg")
@@ -59,7 +59,17 @@ wall_tile_adhesive = st.text_input("", key= "wall_tile_adhesive")
 st.write("GIVE CONSTRAINT VALUE FOR STONE TILE ADHESIVE 20 kg")
 stone_tile_adhesive= st.text_input("", key= "stone_tile")
 
-if st.checkbox("should we create constraint values for number of bags"):
+total_no_bags = int(aac_30) + int(aac_40) + int(floor_tile_adhesive) + int(wall_tile_adhesive) + int(stone_tile_adhesive)
+total_production_cost = int(aac_30)*aacblock30cost + int(aac_40)*aacblock40cost + int(floor_tile_adhesive)*floortile20cost + int(wall_tile_adhesive) * walltile20cost + int(stone_tile_adhesive) * stonetile20cost
+
+if st.checkbox("CLICK TO CREATE THE CONSTRAINT"):
+    total_no_bags = int(aac_30) + int(aac_40) + int(floor_tile_adhesive) + int(wall_tile_adhesive) + int(stone_tile_adhesive)
+    total_production_cost = int(aac_30)*aacblock30cost + int(aac_40)*aacblock40cost + int(floor_tile_adhesive)*floortile20cost + int(wall_tile_adhesive) * walltile20cost + int(stone_tile_adhesive) * stonetile20cost
+
+    st.write(f"MAX NUMBER OF BAG PRODUCE IN MONTH {total_no_bags}")
+    st.write(f"MAX PRODUCTION COST YOU BASED ON NO. OF BAG PRODCUT {total_production_cost}")
+    
+
     aacblock30constraint = m.add_constraint(noaacblock30adhesive <=int(aac_30))
     aacblock40constraint = m.add_constraint(noaacblock40adhesive <=int(aac_40))
     floortile20constraint = m.add_constraint(nofloortile20adhesive <=int(floor_tile_adhesive))
@@ -67,10 +77,10 @@ if st.checkbox("should we create constraint values for number of bags"):
     stonetile20constraint = m.add_constraint(nostonetile20adhesive <=int(stone_tile_adhesive))
     
     st.write("NOW LETS MAKE ANOTHER CONSTRAINT")
-    st.write("TOTAL PRODCUTION CONSTRAINT : MONTHLY COST OF PRODUCING ALL PRODCUT")
-    st.write("THE VALUE THAT YOU WILL PROVIDE SIGNIFY THE AMOUNT YOU DONT WANT")
-    st.write("EXCEED TO CREATE ALL THE PRODCUTS FOR EX : 200000")
-    st.write("SIGNIFY TOTAL COST TO CREATE YOUR PRODCUT SHOULD BE LESS THAT 2LAC")
+    st.write("TOTAL PRODCUTION CONSTRAINT : MONTHLY COST OF PRODUCING ALL PROCUCTS")
+    st.write("THE VALUE THAT YOU WILL PROVIDE SIGNIFY THE AMOUNT YOU DONT WANT TO")
+    st.write("EXCEED WHILE MANUFACTURING ALL THE PRODCUTS" )
+    st.write("FOR EX : 200000 SIGNIFY TOTAL COST TO CREATE YOUR PRODUCT SHOULD BE LESS THAT 2LAC")
     
     production_cost= st.text_input("TOTAL COST OF PRODUCTION CONTRAINTS",)
 
@@ -78,7 +88,12 @@ if st.checkbox("should we create constraint values for number of bags"):
     
     if st.checkbox("CLICK TO GENERATE REPORT"):
         totalproductionconstraint = m.add_constraint(m.sum([noaacblock30adhesive*aacblock30cost,noaacblock40adhesive*aacblock40cost,nofloortile20adhesive*floortile20cost,nowalltile20adhesive*walltile20cost, nostonetile20adhesive*stonetile20cost])<=int(production_cost))
-        m.maximize(noaacblock30adhesive*aacblock30profit+ noaacblock40adhesive*aacblock40profit + nofloortile20adhesive*floortile20profit + nowalltile20adhesive*walltile20profit + nostonetile20adhesive*stonetile20profit)
+        profit = m.maximize(noaacblock30adhesive*aacblock30profit+ noaacblock40adhesive*aacblock40profit + nofloortile20adhesive*floortile20profit + nowalltile20adhesive*walltile20profit + nostonetile20adhesive*stonetile20profit)
         sol = m.solve()
         report = sol.display()
-        st.write(f"{sol}", f"while not exceeding cost of production {production_cost}")
+        st.write(f"{sol}")
+        st.write(f"MAX PROFIT YOU CAN ACHEIVE WITH PROVIDED CONSTRAINTS : {profit}")
+        st.write(f"PROFIT WHEN YOU DO NOT EXCEED PRODCUTION COST IN MONTH : {production_cost}")
+        st.write(f"ALSO MAX NUMBER OF OVERALL BAG YOU WANT TO PRODUCE IN MONTH : {total_no_bags}")
+        st.write(f"WITH THE AMOUNT WOULD HAVE PAYED IN CASE YOU TOUCH YOUR MAX BAG VALUE {total_production_cost}")
+        
