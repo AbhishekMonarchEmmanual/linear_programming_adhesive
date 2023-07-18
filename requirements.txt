@@ -1,0 +1,5 @@
+pandas 
+numpy 
+docplex
+cplex
+streamlit
